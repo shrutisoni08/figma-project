@@ -1,27 +1,14 @@
 import ProfileSection from "../components/ProfileSection";
 import Button from "../components/Button";
-import Sidebar from '../components/SideBar';
+import Sidebar from "../components/SideBar";
+import { Link } from "react-router-dom";
 
 export default function SetUpFirstCampaign() {
   return (
     <div className="flex h-screen bg-gray-50">
       {/* Sidebar */}
       <aside className="w-64 bg-white border-r px-4 py-6">
-        {/* <h2 className="text-lg font-semibold mb-6">Platform Setup</h2>
-        <nav className="space-y-3">
-          <SidebarItem icon="🏁" label="Platform Setup" />
-          <SidebarItem icon="🤖" label="AI Agent" />
-          <SidebarItem icon="📊" label="Dashboard" />
-          <SidebarItem icon="📣" label="Campaign" />
-          <SidebarItem icon="🧑‍🤝‍🧑" label="Promoters" />
-          <SidebarItem icon="👥" label="Leads" />
-          <SidebarItem icon="📄" label="Payouts" />
-        </nav>
-        <div className="mt-auto pt-6 border-t space-y-2">
-          <SidebarItem icon="⚙️" label="Settings" />
-          <SidebarItem icon="❓" label="Help" />
-        </div> */}
-        <Sidebar/>
+        <Sidebar />
       </aside>
 
       {/* Main */}
@@ -30,9 +17,12 @@ export default function SetUpFirstCampaign() {
         <div className="flex gap-6 mt-4">
           {/* Steps */}
           <div className="w-72 bg-[#F8FAFF] rounded-xl p-4 shadow">
-            <h3 className="text-sm font-semibold text-blue-600">Get Started with ReferralHub</h3>
+            <h3 className="text-sm font-semibold text-blue-600">
+              Get Started with ReferralHub
+            </h3>
             <p className="text-xs text-gray-500 mt-1 mb-4">
-              To get started with better referrals & rewards, complete your account setup in a few easy steps.
+              To get started with better referrals & rewards, complete your
+              account setup in a few easy steps.
             </p>
             <ul className="space-y-4">
               <StepItem status="completed" title="Set Up Business Profile" />
@@ -65,10 +55,16 @@ export default function SetUpFirstCampaign() {
                 </div>
                 <div>
                   <label className="text-sm font-medium">Reward Value</label>
-                  <input type="text" className="w-full border rounded-lg p-2 text-sm mt-1" placeholder="Ex: $20, 20%" />
+                  <input
+                    type="text"
+                    className="w-full border rounded-lg p-2 text-sm mt-1"
+                    placeholder="Ex: $20, 20%"
+                  />
                 </div>
               </div>
-              <label className="text-sm font-medium mt-4 block">Partner Message</label>
+              <label className="text-sm font-medium mt-4 block">
+                Partner Message
+              </label>
               <textarea
                 className="mt-1 w-full border rounded-lg p-2 text-sm"
                 placeholder="Ex. ‘Invite your friends and get $25 for each.’"
@@ -88,25 +84,43 @@ export default function SetUpFirstCampaign() {
                 </div>
                 <div>
                   <label className="text-sm font-medium">Reward Value</label>
-                  <input type="text" className="w-full border rounded-lg p-2 text-sm mt-1" placeholder="Ex: 10%" />
+                  <input
+                    type="text"
+                    className="w-full border rounded-lg p-2 text-sm mt-1"
+                    placeholder="Ex: 10%"
+                  />
                 </div>
               </div>
-              <label className="text-sm font-medium mt-4 block">Notified Message</label>
+              <label className="text-sm font-medium mt-4 block">
+                Notified Message
+              </label>
               <textarea
                 className="mt-1 w-full border rounded-lg p-2 text-sm"
                 placeholder="Ex. ‘You’ve been invited! Sign up now & get 10% off your first order.’"
               />
               <div className="flex gap-4 mt-4 text-sm">
-                <label><input type="checkbox" className="mr-1" /> Full Name</label>
-                <label><input type="checkbox" className="mr-1" /> Email</label>
-                <label><input type="checkbox" className="mr-1" /> Phone</label>
-                <label><input type="checkbox" className="mr-1" /> Agree</label>
+                <label>
+                  <input type="checkbox" className="mr-1" /> Full Name
+                </label>
+                <label>
+                  <input type="checkbox" className="mr-1" /> Email
+                </label>
+                <label>
+                  <input type="checkbox" className="mr-1" /> Phone
+                </label>
+                <label>
+                  <input type="checkbox" className="mr-1" /> Agree
+                </label>
               </div>
             </SectionCard>
 
             <FollowUpSection title="Follow-up Strategy (Leads)" />
             <div className="text-center">
-              <Button className="bg-gradient-to-r from-blue-500 to-blue-400 text-white px-12 mt-4">Launch</Button>
+              <Link to="/dashboard">
+                <Button className="bg-gradient-to-r from-blue-500 to-blue-400 text-white px-12 mt-4">
+                  Launch
+                </Button>
+              </Link>
             </div>
           </div>
         </div>
@@ -135,14 +149,22 @@ function SidebarItem({ icon, label }) {
 
 function StepItem({ status, title }) {
   const getCircle = () => {
-    if (status === 'completed') return <div className="w-5 h-5 rounded-full bg-green-500 flex items-center justify-center text-white text-xs">✓</div>;
-    if (status === 'inProgress') return <div className="w-5 h-5 rounded-full border-4 border-blue-500" />;
+    if (status === "completed")
+      return (
+        <div className="w-5 h-5 rounded-full bg-green-500 flex items-center justify-center text-white text-xs">
+          ✓
+        </div>
+      );
+    if (status === "inProgress")
+      return <div className="w-5 h-5 rounded-full border-4 border-blue-500" />;
     return <div className="w-5 h-5 rounded-full border border-gray-300" />;
   };
 
   const getText = () => {
-    if (status === 'completed') return <span className="text-xs text-green-600">Completed</span>;
-    if (status === 'inProgress') return <span className="text-xs text-blue-500">In Progress</span>;
+    if (status === "completed")
+      return <span className="text-xs text-green-600">Completed</span>;
+    if (status === "inProgress")
+      return <span className="text-xs text-blue-500">In Progress</span>;
     return <span className="text-xs text-gray-400">Not Started</span>;
   };
 
@@ -174,7 +196,10 @@ function FollowUpSection({ title }) {
         </div>
         <div>
           <label className="text-sm">Follow-up Message</label>
-          <textarea className="w-full border rounded-lg p-2 text-sm mt-1" placeholder="Ex. Reminder: invite your friends" />
+          <textarea
+            className="w-full border rounded-lg p-2 text-sm mt-1"
+            placeholder="Ex. Reminder: invite your friends"
+          />
         </div>
       </div>
     </SectionCard>

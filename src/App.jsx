@@ -27,8 +27,8 @@ const App = () => {
         <Route path="/dashboard" element={<DashboardPage />} />
         <Route path="/ai-agent" element={<AIAgent />} />
         <Route path="/sync-customer-data" element={<SyncCustomerData />} />
-        <Route path="/set-up-first-campaign" element={<SetUpFirstCampaign />} />
         <Route path="/set-up-ai-agent-rules" element={<SetUpAIAgentRules />} />
+        <Route path="/set-up-first-campaign" element={<SetUpFirstCampaign />} />
         <Route path="/dashboard-page" element={<Dashboard />} />
         <Route path="/campaign-page" element={<CampaignPage />} />
         <Route path="/promoters-page" element={<PromotersPage />} />

@@ -180,9 +180,11 @@ const DashboardPage = () => {
             </div>
 
             <div className="mt-6 flex justify-end">
-              <button className="px-6 py-2 bg-gradient-to-r from-blue-500 to-blue-400 text-white font-semibold rounded-lg">
-                Next
-              </button>
+              <Link to="/sync-customer-data">
+                <button className="px-6 py-2 bg-gradient-to-r from-blue-500 to-blue-400 text-white font-semibold rounded-lg">
+                  Next
+                </button>
+              </Link>
             </div>
           </div>
         </div>

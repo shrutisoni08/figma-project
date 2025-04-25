@@ -107,9 +107,11 @@ export default function SyncCustomerData() {
                   Click to Upload CSV File
                 </Button>
               </div>
-              <Button className="bg-gradient-to-r from-blue-500 to-blue-400 text-white px-10 mt-6">
-                Next
-              </Button>
+              <Link to="/set-up-ai-agent-rules">
+                <Button className="bg-gradient-to-r from-blue-500 to-blue-400 text-white px-10 mt-6">
+                  Next
+                </Button>
+              </Link>
             </div>
           </div>
         </div>
