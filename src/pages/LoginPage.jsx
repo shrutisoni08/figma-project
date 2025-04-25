@@ -12,7 +12,7 @@ const LoginPage = () => {
  
   const handleLogin = async () => {
     try {
-      const response = await fetch("http://34.10.166.233/auth/login", {
+      const response = await fetch("/api/login", {
         method: "POST",
         headers: {
           "Content-Type": "application/json",

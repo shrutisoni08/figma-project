@@ -57,7 +57,7 @@ const RegisterPage = () => {
 
     try {
       setLoading(true);
-      const response = await fetch("http://34.10.166.233/auth/register", {
+      const response = await fetch("/api/register", {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
