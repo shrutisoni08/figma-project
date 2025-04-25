@@ -61,7 +61,6 @@ export default function PromotersPage() {
   const [showModal, setShowModal] = useState(false);
   const [activeTab, setActiveTab] = useState("manual");
   const [promotersList, setPromotersList] = useState(promoters);
-  const [newPromoters, setNewPromoters] = useState([]);
 
   const [manualForm, setManualForm] = useState({
     promoter_first_name: "",
@@ -266,51 +265,6 @@ export default function PromotersPage() {
               </tr>
             </thead>
             <tbody>
-              {newPromoters.length > 0 && (
-                <>
-                  <tr className="bg-gray-100">
-                    <td
-                      colSpan="9"
-                      className="text-left text-sm font-semibold py-2 px-4"
-                    >
-                      Newly Added Promoters
-                    </td>
-                  </tr>
-                  <tbody>
-                    {promotersList.length > 0 &&
-                      promotersList.map((p, index) => (
-                        <tr key={index} className="border-b">
-                          <td className="py-2">
-                            <input
-                              type="checkbox"
-                              checked={index < 2}
-                              readOnly
-                            />
-                          </td>
-                          <td className="py-2">{p.name}</td>
-                          <td className="py-2">{p.contact}</td>
-                          <td className="py-2">{p.leads}</td>
-                          <td className="py-2">{p.conversion}</td>
-                          <td className="py-2">{p.followUp}</td>
-                          <td className="py-2">{p.revenue}</td>
-                          <td className="py-2">
-                            <span
-                              className={`px-2 py-1 text-xs font-medium rounded-full ${
-                                statusColors[p.status]
-                              }`}
-                            >
-                              {p.status}
-                            </span>
-                          </td>
-                          <td className="py-2 flex space-x-2">
-                            <Eye className="w-4 h-4 text-gray-500 cursor-pointer" />
-                            <MessageCircleMore className="w-4 h-4 text-gray-500 cursor-pointer" />
-                          </td>
-                        </tr>
-                      ))}
-                  </tbody>
-                </>
-              )}
 
               {/* Regular Promoter List */}
               {promotersList.map((p, index) => (
