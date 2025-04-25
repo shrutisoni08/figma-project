@@ -77,7 +77,7 @@ export default function PromotersPage() {
   const verifyToken = async () => {
     const accessToken = localStorage.getItem("access_token");
 
-    const res = await fetch("http://34.10.166.233/auth/verify-token", {
+    const res = await fetch("/api/verifyToken", {
       method: "GET",
       headers: {
         Authorization: `Bearer ${accessToken}`,
@@ -91,7 +91,7 @@ export default function PromotersPage() {
   const refreshAccessToken = async () => {
     const refresh = localStorage.getItem("refresh_token");
 
-    const res = await fetch("http://34.10.166.233/auth/refresh", {
+    const res = await fetch("/api/refreshAccessToken", {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
@@ -131,17 +131,14 @@ export default function PromotersPage() {
     try {
       const accessToken = await getValidAccessToken();
 
-      const response = await fetch(
-        "http://34.10.166.233/auth/create-promoter",
-        {
-          method: "POST",
-          headers: {
-            Authorization: `Bearer ${accessToken}`,
-            "Content-Type": "application/json",
-          },
-          body: JSON.stringify(formData),
-        }
-      );
+      const response = await fetch("/api/createPromoter", {
+        method: "POST",
+        headers: {
+          Authorization: `Bearer ${accessToken}`,
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify(formData),
+      });
 
       const responseData = await response.json();
 
