@@ -1,0 +1,5 @@
+[[redirects]]
+  from = "/auth/*"
+  to = "http://34.10.166.233/auth/:splat"
+  status = 200
+  force = true
