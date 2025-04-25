@@ -118,59 +118,16 @@ export default function PromotersPage() {
     return await refreshAccessToken();
   };
 
-  const handleManualInputChange = (e) => {
-    const { name, value, type, checked } = e.target;
-    setManualForm((prev) => ({
-      ...prev,
-      [name]: type === "checkbox" ? checked : value,
-    }));
+  const handleManualSubmit = (e) => {
+    e.preventDefault();
+    // Submit the form
+    console.log(manualForm);
+    setShowModal(false); // Close modal after submit
   };
 
-  const handleManualSubmit = async (formData) => {
-    try {
-      const accessToken = await getValidAccessToken();
-
-      const response = await fetch("/api/createPromoter", {
-        method: "POST",
-        headers: {
-          Authorization: `Bearer ${accessToken}`,
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify(formData),
-      });
-
-      const responseData = await response.json();
-
-      if (!response.ok) {
-        console.error("Error response:", responseData);
-        toast.error(responseData.message || "Failed to add promoter.");
-        return;
-      }
-
-      const newEntry = {
-        name: `${formData.promoter_first_name} ${formData.promoter_last_name}`,
-        contact: formData.promoter_phno,
-        leads: 0,
-        conversion: "0%",
-        followUp: "N/A",
-        revenue: "$0",
-        status: "Active",
-      };
-
-      // Update both newPromoters and promotersList
-      setPromotersList((prevList) => [...prevList, newEntry]);
-      setNewPromoters((prev) => {
-        const updatedList = [newEntry, ...prev];
-        return updatedList;
-      });
-
-      toast.success("Promoter added successfully!");
-    } catch (error) {
-      console.error("Error creating promoter:", error);
-      toast.error(
-        error?.message || "Something went wrong while creating the promoter."
-      );
-    }
+  const handleManualInputChange = (e) => {
+    const { name, value } = e.target;
+    setManualForm({ ...manualForm, [name]: value });
   };
 
   return (
