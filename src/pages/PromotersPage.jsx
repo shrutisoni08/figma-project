@@ -1,7 +1,6 @@
 import React, { useState } from "react";
 import { Eye, MessageCircleMore, Filter, X } from "lucide-react";
 import Sidebar from "../components/SideBar";
-import toast from "react-hot-toast";
 
 const promoters = [
   {
@@ -73,54 +72,9 @@ export default function PromotersPage() {
     is_onboarded: false,
   });
 
-  const verifyToken = async () => {
-    const accessToken = localStorage.getItem("access_token");
-
-    const res = await fetch("/api/verifyToken", {
-      method: "GET",
-      headers: {
-        Authorization: `Bearer ${accessToken}`,
-        Accept: "application/json",
-      },
-    });
-
-    return res.ok;
-  };
-
-  const refreshAccessToken = async () => {
-    const refresh = localStorage.getItem("refresh_token");
-
-    const res = await fetch("/api/refreshAccessToken", {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-        Accept: "application/json",
-      },
-      body: JSON.stringify({ refresh }),
-    });
-
-    if (res.ok) {
-      const data = await res.json();
-      localStorage.setItem("access_token", data.access);
-      return data.access;
-    }
-
-    throw new Error("Refresh token invalid or expired");
-  };
-
-  const getValidAccessToken = async () => {
-    const isValid = await verifyToken();
-
-    if (isValid) {
-      return localStorage.getItem("access_token");
-    }
-
-    return await refreshAccessToken();
-  };
-
   const handleManualSubmit = (e) => {
     e.preventDefault();
-    // Submit the form
+    // Submit the form (no API logic)
     console.log(manualForm);
     setShowModal(false); // Close modal after submit
   };
@@ -222,8 +176,6 @@ export default function PromotersPage() {
               </tr>
             </thead>
             <tbody>
-
-              {/* Regular Promoter List */}
               {promotersList.map((p, index) => (
                 <tr key={index} className="border-b">
                   <td className="py-2">
@@ -237,9 +189,7 @@ export default function PromotersPage() {
                   <td className="py-2">{p.revenue}</td>
                   <td className="py-2">
                     <span
-                      className={`px-2 py-1 text-xs font-medium rounded-full ${
-                        statusColors[p.status]
-                      }`}
+                      className={`px-2 py-1 text-xs font-medium rounded-full ${statusColors[p.status]}`}
                     >
                       {p.status}
                     </span>
@@ -256,164 +206,175 @@ export default function PromotersPage() {
 
         {/* Modal */}
         {showModal && (
-        <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/10 backdrop-blur-sm">
-          <div className="bg-white rounded-2xl w-full max-w-md p-6 relative shadow-2xl">
+  <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/10 backdrop-blur-sm">
+    <div className="bg-white rounded-2xl w-full max-w-md p-6 relative shadow-2xl">
+      <button
+        onClick={() => setShowModal(false)}
+        className="absolute top-4 right-4 text-gray-500 hover:text-black"
+      >
+        <X className="w-5 h-5" />
+      </button>
+      <h2 className="text-center text-lg font-semibold mb-6">
+        Choose How You Want to Add Customers
+      </h2>
+
+      {/* Tabs */}
+      <div className="flex border border-gray-200 rounded-lg overflow-hidden mb-6">
+        {["manual", "csv", "zapier"].map((tab) => (
+          <button
+            key={tab}
+            className={`flex-1 py-2 text-sm font-medium text-center ${
+              activeTab === tab
+                ? "bg-blue-100 text-blue-600 border-b-2 border-blue-500"
+                : "bg-gray-100 text-gray-500"
+            }`}
+            onClick={() => setActiveTab(tab)}
+          >
+            {tab === "manual" && "Add Manually"}
+            {tab === "csv" && "Upload CSV File"}
+            {tab === "zapier" && "Sync with Zapier"}
+          </button>
+        ))}
+      </div>
+
+      {/* Manual Tab */}
+      {activeTab === "manual" && (
+        <form className="space-y-4" onSubmit={handleManualSubmit}>
+          <div>
+            <label className="block text-sm font-medium mb-1">
+              Full Name
+            </label>
+            <input
+              type="text"
+              name="name"
+              value={manualForm.name}
+              onChange={handleManualInputChange}
+              placeholder="Enter Full Name"
+              className="w-full border border-gray-300 px-3 py-2 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-blue-500"
+            />
+          </div>
+          <div>
+            <label className="block text-sm font-medium mb-1">
+              Phone Number
+            </label>
+            <input
+              type="tel"
+              name="phone"
+              value={manualForm.phone}
+              onChange={handleManualInputChange}
+              placeholder="Enter Phone Number"
+              className="w-full border border-gray-300 px-3 py-2 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-blue-500"
+            />
+          </div>
+          <div>
+            <label className="block text-sm font-medium mb-1">
+              Email ID
+            </label>
+            <input
+              type="email"
+              name="email"
+              value={manualForm.email}
+              onChange={handleManualInputChange}
+              placeholder="Enter Email ID"
+              className="w-full border border-gray-300 px-3 py-2 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-blue-500"
+            />
+          </div>
+          <div className="flex justify-end gap-2 pt-2">
+            <button
+              type="button"
+              onClick={() => setShowModal(false)}
+              className="px-4 py-2 text-sm rounded-lg border border-gray-300 text-gray-700"
+            >
+              Cancel
+            </button>
+            <button
+              type="submit"
+              className="px-4 py-2 text-sm rounded-lg bg-blue-600 text-white"
+            >
+              Save
+            </button>
+          </div>
+        </form>
+      )}
+
+      {/* CSV Tab */}
+      {activeTab === "csv" && (
+        <div className="text-sm text-gray-700">
+          <div className="border-2 border-dashed border-gray-300 rounded-xl p-6 text-center relative">
+            <img
+              src="/upload-icon.svg"
+              alt="upload"
+              className="mx-auto mb-4 w-10"
+            />
+            <p className="text-gray-600 font-medium mb-2">
+              Drag and drop files here
+            </p>
+            <p className="text-gray-400 text-sm mb-4">or</p>
+            <label
+              htmlFor="fileUpload"
+              className="inline-block px-4 py-2 bg-blue-600 text-white rounded-lg text-sm cursor-pointer"
+            >
+              Browse Files
+            </label>
+            <input
+              id="fileUpload"
+              type="file"
+              accept=".csv"
+              className="hidden"
+              onChange={(e) => handleFileUpload(e)}
+            />
+          </div>
+
+          <div className="mt-6 bg-gray-100 rounded-lg p-3 flex items-center justify-between text-sm">
+            <div className="flex items-center space-x-2">
+              <div className="bg-white p-2 rounded shadow-sm">
+                <img
+                  src="/csv-icon.png"
+                  alt="CSV Icon"
+                  className="w-6 h-6"
+                />
+              </div>
+              <div>
+                <p className="font-medium">Leads.csv</p>
+                <p className="text-xs text-gray-500">428KB</p>
+              </div>
+            </div>
+            <div className="flex items-center space-x-2">
+              <span className="text-blue-600 font-semibold">70%</span>
+              <button>
+                <X className="w-4 h-4 text-gray-400 hover:text-red-500" />
+              </button>
+            </div>
+          </div>
+
+          <div className="flex justify-end mt-6">
             <button
               onClick={() => setShowModal(false)}
-              className="absolute top-4 right-4 text-gray-500 hover:text-black"
+              className="px-4 py-2 text-sm rounded-lg bg-blue-600 text-white"
             >
-              <X className="w-5 h-5" />
+              Save
             </button>
-            <h2 className="text-center text-lg font-semibold mb-6">
-              Choose How You Want to Add Customers
-            </h2>
-
-            {/* Tabs */}
-            <div className="flex border border-gray-200 rounded-lg overflow-hidden mb-6">
-              {["manual", "csv", "zapier"].map((tab) => (
-                <button
-                  key={tab}
-                  className={`flex-1 py-2 text-sm font-medium text-center ${
-                    activeTab === tab
-                      ? "bg-blue-100 text-blue-600 border-b-2 border-blue-500"
-                      : "bg-gray-100 text-gray-500"
-                  }`}
-                  onClick={() => setActiveTab(tab)}
-                >
-                  {tab === "manual" && "Add Manually"}
-                  {tab === "csv" && "Upload CSV File"}
-                  {tab === "zapier" && "Sync with Zapier"}
-                </button>
-              ))}
-            </div>
-
-            {/* Manual Tab */}
-            {activeTab === "manual" && (
-              <form className="space-y-4" onSubmit={handleManualSubmit}>
-                <div>
-                  <label className="block text-sm font-medium mb-1">Full Name</label>
-                  <input
-                    type="text"
-                    name="name"
-                    value={manualForm.name}
-                    onChange={handleManualInputChange}
-                    placeholder="Enter Full Name"
-                    className="w-full border border-gray-300 px-3 py-2 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-blue-500"
-                  />
-                </div>
-                <div>
-                  <label className="block text-sm font-medium mb-1">Phone Number</label>
-                  <input
-                    type="tel"
-                    name="phone"
-                    value={manualForm.phone}
-                    onChange={handleManualInputChange}
-                    placeholder="Enter Phone Number"
-                    className="w-full border border-gray-300 px-3 py-2 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-blue-500"
-                  />
-                </div>
-                <div>
-                  <label className="block text-sm font-medium mb-1">Email ID</label>
-                  <input
-                    type="email"
-                    name="email"
-                    value={manualForm.email}
-                    onChange={handleManualInputChange}
-                    placeholder="Enter Email ID"
-                    className="w-full border border-gray-300 px-3 py-2 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-blue-500"
-                  />
-                </div>
-                <div className="flex justify-end gap-2 pt-2">
-                  <button
-                    type="button"
-                    onClick={() => setShowModal(false)}
-                    className="px-4 py-2 text-sm rounded-lg border border-gray-300 text-gray-700"
-                  >
-                    Cancel
-                  </button>
-                  <button
-                    type="submit"
-                    className="px-4 py-2 text-sm rounded-lg bg-blue-600 text-white"
-                  >
-                    Save
-                  </button>
-                </div>
-              </form>
-            )}
-
-            {/* CSV Tab */}
-            {activeTab === "csv" && (
-              <div className="text-sm text-gray-700">
-                <div className="border-2 border-dashed border-gray-300 rounded-xl p-6 text-center relative">
-                  <img
-                    src="/upload-icon.svg"
-                    alt="upload"
-                    className="mx-auto mb-4 w-10"
-                  />
-                  <p className="text-gray-600 font-medium mb-2">Drag and drop files here</p>
-                  <p className="text-gray-400 text-sm mb-4">or</p>
-                  <label
-                    htmlFor="fileUpload"
-                    className="inline-block px-4 py-2 bg-blue-600 text-white rounded-lg text-sm cursor-pointer"
-                  >
-                    Browse Files
-                  </label>
-                  <input
-                    id="fileUpload"
-                    type="file"
-                    accept=".csv"
-                    className="hidden"
-                    onChange={(e) => console.log(e.target.files[0])}
-                  />
-                </div>
-
-                <div className="mt-6 bg-gray-100 rounded-lg p-3 flex items-center justify-between text-sm">
-                  <div className="flex items-center space-x-2">
-                    <div className="bg-white p-2 rounded shadow-sm">
-                      <img
-                        src="/csv-icon.png"
-                        alt="CSV Icon"
-                        className="w-6 h-6"
-                      />
-                    </div>
-                    <div>
-                      <p className="font-medium">Leads.csv</p>
-                      <p className="text-xs text-gray-500">428KB</p>
-                    </div>
-                  </div>
-                  <div className="flex items-center space-x-2">
-                    <span className="text-blue-600 font-semibold">70%</span>
-                    <button>
-                      <X className="w-4 h-4 text-gray-400 hover:text-red-500" />
-                    </button>
-                  </div>
-                </div>
-
-                <div className="flex justify-end mt-6">
-                  <button
-                    onClick={() => setShowModal(false)}
-                    className="px-4 py-2 text-sm rounded-lg bg-blue-600 text-white"
-                  >
-                    Save
-                  </button>
-                </div>
-              </div>
-            )}
-
-            {/* Zapier Tab */}
-            {activeTab === "zapier" && (
-              <div className="border-2 border-dashed border-gray-300 rounded-xl p-6 text-center text-gray-700">
-                <p className="text-sm mb-4">
-                  Automatically sync your customer data from your CRM using Zapier
-                </p>
-                <button className="bg-blue-600 hover:bg-blue-700 text-white px-6 py-2 rounded-lg text-sm font-medium">
-                  Connect with Zapier
-                </button>
-              </div>
-            )}
           </div>
         </div>
       )}
+
+      {/* Zapier Tab */}
+      {activeTab === "zapier" && (
+        <div className="border-2 border-dashed border-gray-300 rounded-xl p-6 text-center text-gray-700">
+          <p className="text-sm mb-4">
+            Automatically sync your customer data from your CRM using
+            Zapier
+          </p>
+          <button className="bg-blue-600 hover:bg-blue-700 text-white px-6 py-2 rounded-lg text-sm font-medium">
+            Connect with Zapier
+          </button>
+        </div>
+      )}
+    </div>
+  </div>
+)}
+
+
       </main>
     </div>
   );
