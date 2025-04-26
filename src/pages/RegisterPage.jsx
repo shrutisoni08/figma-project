@@ -1,4 +1,3 @@
-/* eslint-disable no-unused-vars */
 import React, { useState } from "react";
 import { FcGoogle } from "react-icons/fc";
 import { FaFacebookF, FaXTwitter, FaLinkedinIn } from "react-icons/fa6";
@@ -10,14 +9,13 @@ const RegisterPage = () => {
   const [showPassword, setShowPassword] = useState(false);
   const [email, setEmail] = useState("");
   const [fullName, setFullName] = useState("");
-  // eslint-disable-next-line no-unused-vars
   const [role, setRole] = useState("BusinessOwner");
   const [password, setPassword] = useState("");
   const [confirmPassword, setConfirmPassword] = useState("");
   const [error, setError] = useState("");
   const [loading, setLoading] = useState(false);
 
-  const handleRegister = async () => {
+  const handleRegister = () => {
     setError("");
 
     // Basic validation
@@ -32,11 +30,6 @@ const RegisterPage = () => {
       return;
     }
 
-    if (password.length < 6) {
-      setError("Password must be at least 6 characters");
-      return;
-    }
-
     // No password strength validation, just check if it's at least 6 characters
     if (password.length < 6) {
       setError("Password must be at least 6 characters");
@@ -48,41 +41,8 @@ const RegisterPage = () => {
       return;
     }
 
-    const requestBody = {
-      email,
-      password,
-      role,
-      full_name: fullName,
-    };
-
-    try {
-      setLoading(true);
-      const response = await fetch("/api/register", {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify(requestBody),
-      });
-
-      const data = await response.json();
-
-      if (response.status === 201) {
-        // Registration successful
-        navigate("/login");
-      } else {
-        // Handle specific error responses
-        setError(
-          data?.email
-            ? "This email is already registered."
-            : data?.detail || "Registration failed. Please try again."
-        );
-      }
-    } catch (err) {
-      setError("Something went wrong. Please try again.");
-    } finally {
-      setLoading(false);
-    }
+    // Navigate to the login page after validation
+    navigate("/login");
   };
 
   return (

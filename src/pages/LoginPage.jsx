@@ -9,37 +9,10 @@ const LoginPage = () => {
   const [password, setPassword] = useState("");
   const [error, setError] = useState("");
   const navigate = useNavigate();
- 
-  const handleLogin = async () => {
-    try {
-      const response = await fetch("/api/login", {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-          Authorization: "Basic U2hydXRpIFNvbmk6N3FKczVIZzJMUXFEWmJO",
-          "X-CSRFTOKEN":
-            "oLVwMlyLxG0j6wmJhTIjJY8K1onWJQ6TCaae3pFrnr0eJsxBOZBCWsApBh6DGIr5",
-        },
-        body: JSON.stringify({ email, password }),
-      });
 
-      const responseData = await response.json();
-
-      if (response.ok) {
-        // Assuming you have tokens in the response
-        localStorage.setItem("accessToken", responseData.access);
-        localStorage.setItem("refreshToken", responseData.refresh);
-        localStorage.setItem("userEmail", email);
-        navigate("/dashboard");
-      } else {
-        const errorMessage =
-          responseData.detail || "Invalid credentials. Please try again.";
-        setError(errorMessage);
-      }
-    } catch (error) {
-      console.error("Login error:", error);
-      setError("Something went wrong. Please try again.");
-    }
+  const handleLogin = () => {
+    // Directly navigate to the dashboard page
+    navigate("/dashboard");
   };
 
   return (
