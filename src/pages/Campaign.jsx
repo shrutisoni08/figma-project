@@ -56,9 +56,7 @@ const COLORS = ["#6366F1", "#E5E7EB"];
 export default function Campaign() {
   return (
     <div className="flex min-h-screen bg-white text-gray-900">
-      <aside className="w-64 hidden md:block">
-        <Sidebar />
-      </aside>
+  
       <main className="flex-1 px-6 py-4">
         <div className="flex items-center space-x-2 mb-4">
           <ChevronLeft className="w-5 h-5 text-gray-500" />

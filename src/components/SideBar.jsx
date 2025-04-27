@@ -19,7 +19,7 @@ const Sidebar = () => {
     { name: "Platform Setup", icon: <ServerCog size={18} />, to: "/dashboard" },
     { name: "AI Agent", icon: <Bot size={18} />, to: "/ai-agent" },
     { name: "Dashboard", icon: <LayoutDashboard size={18} />, to: "/dashboard-page" },
-    { name: "Campaign", icon: <Megaphone size={18} />, to: "/campaign" },
+    { name: "Campaign", icon: <Megaphone size={18} />, to: "/campaign-page" },
     { name: "Promoters", icon: <Users size={18} />, to: "/promoters-page" },
     { name: "Leads", icon: <UserPlus size={18} />, to: "/leads-page" },
     { name: "Payouts", icon: <FileText size={18} />, to: "/payouts-page" },

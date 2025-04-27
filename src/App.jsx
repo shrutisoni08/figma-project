@@ -24,13 +24,13 @@ const App = () => {
         <Route path="/login" element={<LoginPage />} />
         <Route path="/register" element={<RegisterPage />} />
         <Route path="/campaign" element={<Campaign />} />
+        <Route path="/campaign-page" element={<CampaignPage />} />
         <Route path="/dashboard" element={<DashboardPage />} />
         <Route path="/ai-agent" element={<AIAgent />} />
         <Route path="/sync-customer-data" element={<SyncCustomerData />} />
         <Route path="/set-up-ai-agent-rules" element={<SetUpAIAgentRules />} />
         <Route path="/set-up-first-campaign" element={<SetUpFirstCampaign />} />
         <Route path="/dashboard-page" element={<Dashboard />} />
-        <Route path="/campaign-page" element={<CampaignPage />} />
         <Route path="/promoters-page" element={<PromotersPage />} />
         <Route path="/leads-page" element={<Leads />} />
         <Route path="/payouts-page" element={<Payouts />} />
